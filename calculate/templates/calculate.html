@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор энергии</title>
+</head>
+<body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+
+    form {
+        background-color: #f9f9f9;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+        margin-bottom: 10px;
+        display: block;
+    }
+
+    input, select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+
+    .btn {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    div {display: flex;
+    flex-direction: column;
+  margin: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+}
+
+h3 {
+  font-family: Arial, sans-serif;
+  font-size: 18px;
+  color: #333;
+  margin-bottom: 10px;
+}
+</style>
+<div>
+<div>
+    <form action = "{% url 'calculate:calculator' %}" method="post">
+        {% csrf_token %}
+
+        <label for="cost">Стоимость электроэнергии(кВт.ч):</label>
+        <input type="text" id="cost" name="cost" required pattern="[0-9]+" title="Введите число">
+
+        <label for="power">Мощность:</label>
+        <select id="power" name="power">
+            <option value="kW">кВт</option>
+            <option value="W">Вт</option>
+        </select>
+        <input type="number" name="cvt" required pattern="[0-9]+" title="Введите число">
+
+        <label for="hours">Время работы прибора (часы):</label>
+        <input type="number" id="hours" name="hours" min="0" max="24" required pattern="[0-9]+" title="Введите число">
+
+        <label for="minutes">Время работы прибора (минуты):</label>
+        <input type="number" id="minutes" name="minutes" min="0" max="59" required pattern="[0-9]+" title="Введите число">
+
+        <button class="btn">Рассчитать</button>
+
+    </form>
+</div>
+
+{% if hours %}
+    <div>
+        <h3>За {{ hours }} часов и {{ minutes }} минут будет потрачено {{ itog }} руб.</h3>
+        <h3>За неделю будет потрачено {{ week }} руб.</h3>
+        <h3>За месяц будет потрачено {{ mounth }} руб.</h3>
+        <h3>За год будет потрачено {{ year }} руб.</h3>
+    </div>
+{% endif %}
+</div>
+</body>
+</html>
